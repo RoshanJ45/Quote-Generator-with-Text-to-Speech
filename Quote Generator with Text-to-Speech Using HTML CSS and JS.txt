@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f9;
+            font-family: Arial, sans-serif;
+            color: #333;
+            text-align: center;
+        }
+        #quote-box {
+            max-width: 500px;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: #fff;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        #quote {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+        #author {
+            font-size: 1.2rem;
+            font-style: italic;
+            color: #555;
+        }
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 1rem;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            background-color: #4CAF50;
+            color: white;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+
+<div id="quote-box">
+    <div id="quote">Click the button to get a quote!</div>
+    <div id="author"></div>
+</div>
+
+
+<button id="new-quote">Get New Quote</button>
+
+
+<script>
+    const quoteText = document.getElementById('quote');
+    const authorText = document.getElementById('author');
+    const button = document.getElementById('new-quote');
+
+
+    function getQuote() {
+        fetch('https://api.quotable.io/random')
+            .then(response => response.json())
+            .then(data => {
+                quoteText.textContent = `"${data.content}"`;
+                authorText.textContent = `- ${data.author}`;
+                speakQuote(data.content);
+            });
+    }
+
+
+    function speakQuote(text) {
+        const speech = new SpeechSynthesisUtterance(text);
+        speech.rate = 1;  
+        speech.pitch = 1;
+        window.speechSynthesis.speak(speech);
+    }
+
+
+    button.addEventListener('click', getQuote);
+</script>
+</body>
+</html>
